@@ -35,3 +35,125 @@ npm install @apollo/client graphql
 
 - import browserRouter, routes, and route.
 - Create a Route to Movies and 
+
+## 1.0 Steup
+
+- Run your GraphQL server on the background.
+- Apolla client will communicate with the GraphQL server.
+- Work on the nc-apollo-movieql-client
+- Apollo Client has hooks. You will use hooks 99.99% of the time. 
+- Import client in App.js. Then, 
+```js
+import client from "./client";
+```
+- Then, below will be executed.
+```js
+client.query({
+    query: gql`
+    {
+        allMovies {
+            title
+        }
+    }
+    `
+}).then(data=> console.log(data))
+```
+- Notice from the devtool and see the console, we see that data has been outputed.
+
+*What did we do?*
+1. created a Apollo Client
+2. we wrote the query
+3. send the query to localhost 4000
+4. Then, console.log the data.
+
+## 1.1 ApolloProvider. 
+
+- Index.js - import ApoloProvider.
+- We are going to surround our application with ApoloProvider. It needs a client that we just created. 
+- If you want to access the client from the movie screen, you can use the hook useApolloClient(). This will be the same client that you use here. 
+
+*How do you send data across the route or the page?*
+
+- State the ApolloClient in the index.js. Then, send the client data.
+
+index.js
+```js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { ApolloProvider } from "@apollo/client";
+import client from "./client";
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </React.StrictMode>
+);
+
+```
+- Once sent to app.js, it will send it to the router. 
+- You can receive client data from the page as below
+
+```js
+import { gql, useApolloClient } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+export default function Movies() {
+  const [movies, setMovies] = useState([]);
+  const client = useApolloClient();
+  useEffect(() => {
+    client
+      .query({
+        query: gql`
+          {
+            allMovies {
+              title
+              id
+            }
+          }
+        `,
+      })
+      .then((results) => setMovies(results.data.allMovies));
+  }, [client]);
+  return (
+    <ul>
+      {movies.map((movie) => (
+        <li key={movie.id}>{movie.title}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+- This looks like you are fetching API but there is a better way of doing this by using useQuery hook.
+- useQuery hook will do the useState and client for us. 
+
+## 1.2 useQuery
+
+- We are going to write graphQL query. 
+
+*How does it work?*
+
+Without getting the ApolloClientData, you can create a const variable called ALL_MOVIES = gql``;
+
+src/routes/Movies.js
+```js
+// inside, you can create a GraphQL query.
+const ALL_MOVIES = gql`
+    {
+        allMovies {
+            title
+            id
+        }
+    }
+`;
+```
+
+*How do you use useQuery hook?*
+- useQuery comes from ApolloClient.
+- It will give us a lot of stuff. We get data, client, loading and error. when we call the useQuery hook. 
+- declarative code: you only write code to get what you want. We just express what we want, and useQuery hook will give it to us. 
+- imperative code: write every step of the way. step by step.
