@@ -157,3 +157,43 @@ const ALL_MOVIES = gql`
 - It will give us a lot of stuff. We get data, client, loading and error. when we call the useQuery hook. 
 - declarative code: you only write code to get what you want. We just express what we want, and useQuery hook will give it to us. 
 - imperative code: write every step of the way. step by step.
+
+## useQuery Variable
+
+20230310
+- Connect from Movies to movie screen.
+- Send variable to movie. 
+
+- When the react component provide 
+- GraphQL and apollo will provide apollo .
+
+- create a graphql script save it in the variable. 
+- Use useQuery to fetch the data.
+
+*Power of Apollo Cache?*
+
+- When you click the movie title to get into the detailed page, it never loaded. 
+- Apollo will save the result of the query to the memory of the browser or cache. When you go to a different screen and come back, you will see the data right away.
+
+## Apollo Dev Tools
+
+- Go to Apollo Client Devtools or search in Google. 
+- This is a tool that you can inspect cache in a very cool way. 
+- You can add to the chrome. 
+- After it is added, you can refresh the page and inspect.
+- At the end, you can see apollo. 
+- You can view More Tools and you will see other things. 
+- You are going to see the Queries that you have run before. 
+- It allows you to explore the API. 
+- It is the same explorer that you have. 
+- If you ever work in application, you can open the apollo dev tool and still find information about the API. types and all the queries and mutation and what they need. 
+- All the information about the cache or the query is there. 
+
+- Apollo will normalize the data for you. 
+- In the movie.js, you can view the small,page,image. 
+- In the movie, you are seeing that. 
+- Apollo knows that field IDs are there. 
+- Cache tab exist in there. when you search by the ID number. 
+- Apollo cache knows about the movie. 
+- If you request more data with the same ID, it will find the same ID and put the new data inside the cache. Which is super smart and cool.l 
+- 
